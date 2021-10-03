@@ -1,28 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="icon" href="http://example.com/favicon.png">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Anti Othello</title>
 
     <link rel="stylesheet" href="style.css">
-</head>;
-<body>
-    <div class="container">
-        <div class="box">
-            <div class="circle"></div>
-        </div>
-        <div class="box">
-            <div class="circle"></div>
-        </div>
-        <div class="box">
-            <div class="circle"></div>
-        </div>
-
-
-        
-        
-    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="script.js"></script>
+</head>
+<body onload="init()">
+    <header>
+        <h1>Anti Othello</h1>
+        <p>By Mathias Ooi and Zachary Leong</p>
+        <p>Score white: 0 Score black: 0</p>
+      </header>
+    <div class="container" id="container"></div>
 </body>
 </html
