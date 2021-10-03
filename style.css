@@ -16,14 +16,24 @@ body {
     margin: -40vh 0 0 -40vh;
 }
 
-.circle-b {
+.circle {
     /* Can't really create a board cuz cant color margin */
     position: relative;
-    width: 9vh;
-    height: 9vh;
-    margin: 0.5vh;
+    width: 7vh;
+    height: 7vh;
     border-radius: 5vh;
     float: left;
     z-index: 10;
     background-color: black;
+    display: flex;
+    justify-content: center;
+}
+
+.box {
+    position: relative;
+    width: 9vh;
+    height: 9vh;
+    float: left;
+    z-index: 10;
+    border: 0.5vh black;
 }
