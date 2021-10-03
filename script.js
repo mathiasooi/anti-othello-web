@@ -22,9 +22,11 @@ function init() {
 
     // Init board
     for (let i = 0; i < 8; ++i) {
+        var u = [];
         for (let j = 0; j < 8; ++j) {
-            board.push(-1)
+            u.push(-1)
         }
+        board.push(u)
     }
     changeColor(28, 0)
     changeColor(35, 0)
@@ -40,59 +42,59 @@ function selectTile(elem) {
     getCord(elem.id)
 
     // Flippy flippy
-    flip(elem.id)
+    var x = flips(elem.id)
+    console.log("X", x)
+    for (let i = 0; i < x.length; ++i) {
+        changeColor(x[i][0]*8 + x[i][1], player_color)
+        console.log(x[i][0], x[i][1])
+    }
 }
 
 function onBoard(x, y) {
     // Check if cordinate is on the board
-    return (0 <= x && x <= 7 && 0 <= y && y <= 7)
+    return (0 < x && x <= 7 && 0 < y && y <= 7)
 }
 
-function flip(id) {
+function flips(id) {
     var elem = document.getElementById(id)
     var x = getCord(id)[0], y = getCord(id)[1]
     console.log(x, y)
-    var color = board[x, y]
+    var color = board[x][y]
     var opp = swap_color[color]
+    var flips = []
     for (let dx = -1; dx < 2; ++dx) {
         for (let dy = -1; dy < 2; ++dy) {
-            if (!(dx || dy)) {continue;}
-            console.log(dx, dy)
-            var nx = x, ny = y; 
-            nx += dx
-            ny += dy
-            if (onBoard(nx, ny) && board[nx][ny] == opp){
-                nx += dx
-                ny += dy 
-                if (!onBoard(nx, ny)) {continue}
-                while (board[x][y] == opp) {
-                    nx += dx
-                    ny += dy
-                    if (!onBoard(nx, ny)) {break}
+            var opps = []
+            for (let i = 1; i < 9; ++i) {
+                var nx = x+i*dx
+                var ny = y+i*dy
+                // console.log(dx, dy, board[nx][ny])
+                if (x < 0 || x >= 8 || y < 0 || y >= 8) {break}
+                if (board[nx][ny] == -1) {break}
+                else if (board[nx][ny] == opp) {opps.push([nx, ny])}
+                else if (board[nx][ny] == color) {
+                    // console.log(opps)
+                    flips.push.apply(flips, opps)
+                    break
                 }
-            }
-            if (!onBoard(nx, ny) || board[nx][ny] != color) {continue}
-            while ((nx, ny) != (x, y)){
-                nx -= dx
-                ny -= dy
-                console.log("change", nx, ny)
-                changeColor(id, color)
             }
         }
     }
+    return flips
 }
 
 function changeColor(id, c) {
     // black = 0, white = 1
     var elem = document.getElementById(id)
+    var x = getCord(id)[0], y = getCord(id)[1]
     if (c === 0) {
         elem.className = 'circle black'
-        board[id] = 0
+        board[x][y] = 0
         score_b += 1
     }
     else if (c === 1) {
         elem.className = 'circle white'
-        board[id] = 1
+        board[x][y] = 1
         score_w += 1
     }
     console.log(board)
@@ -114,6 +116,6 @@ function flipColor(id) {
 }
 
 function getCord(id) {
-    id = parseInt(id);
+    id = parseInt(id)
     return [id % 8, Math.floor(id / 8)]
 }
