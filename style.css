@@ -1,48 +1,43 @@
 body {
-    margin: 0;
-    height: 100vh;
-    /* display: flex;
-    align-items: center;
-    justify-content: center; */
+  margin: 0;
+  height: 100vh;
 }
 
-.container {
-    position: absolute;
-    width: 80vh; 
-    height: 80vh; 
-    background-color: green; 
-    top: 50%;
-    left: 50%;
-    margin: -40vh 0 0 -40vh;
-    border: 0.5vh solid black;
+.container-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-gap: 1vh;
+  position: absolute;
+  width: 80vh;
+  height: 80vh;
+  background-color: black;
+  top: 50%;
+  left: 50%;
+  margin: -40vh 0 0 -40vh;
+  border: 1vh solid black;
+}
+
+.container div {
+  aspect-ratio: 1;
 }
 
 .circle {
-    /* Can't really create a board cuz cant color margin */
-    width: 8vh;
-    height: 8vh;
-    border-radius: 5vh;
-    z-index: 10;
-  }
-  
-.box {
-    position: relative;
-    width: 8vh;
-    height: 8vh;
-    float: left;
-    z-index: 5;
-    border: 0.5vh solid black;
-    padding: 0.5vh;
+  /* Can't really create a board cuz cant color margin */
+  width: 8vh;
+  height: 8vh;
+  border-radius: 5vh;
+  z-index: 10;
+  margin: 0.5vh;
 }
 
 .green {
-    background-color: green;
+  background-color: green;
 }
 
 .black {
-    background-color: black;
+  background-color: black;
 }
 
 .white {
-    background-color: white;
+  background-color: white;
 }
