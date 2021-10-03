@@ -1,0 +1,29 @@
+body {
+    margin: 0;
+    height: 100vh;
+    /* display: flex;
+    align-items: center;
+    justify-content: center; */
+}
+
+.container {
+    position: absolute;
+    width: 80vh; 
+    height: 80vh; 
+    background-color: green; 
+    top: 50%;
+    left: 50%;
+    margin: -40vh 0 0 -40vh;
+}
+
+.circle-b {
+    /* Can't really create a board cuz cant color margin */
+    position: relative;
+    width: 9vh;
+    height: 9vh;
+    margin: 0.5vh;
+    border-radius: 5vh;
+    float: left;
+    z-index: 10;
+    background-color: black;
+}
