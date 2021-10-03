@@ -3,6 +3,13 @@ body {
   height: 100vh;
 }
 
+.header {
+  width: auto;
+  height: 20vh;
+  position: relative;
+  padding: 3vh;
+}
+
 .container-grid {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
@@ -40,4 +47,8 @@ body {
 
 .white {
   background-color: white;
+}
+
+.gray {
+  background-color: gray;
 }

@@ -4,8 +4,6 @@ var board = []
 // Green -1
 var player_color = Math.floor(Math.random() * 2)
 var swap_color = { 1: 0, 0: 1 }
-var score_w = 0
-var score_b = 0
 
 function init() {
   // Add circles to board
@@ -32,35 +30,43 @@ function init() {
   changeColor(35, 0)
   changeColor(27, 1)
   changeColor(36, 1)
+  
+  showValids()
+  updateScore()
 }
 
 function selectTile(elem) {
-  // TODO Check for turn state
-  elem = elem.path[0]
-  changeColor(elem.id, player_color)
-
-  getCord(elem.id)
+  // User calls this when click on circle
+  id = elem.path[0].id
+  
+  // Check valid move
+  var valids = getValidMoves(player_color)
+  console.log(valids, parseInt(id))
+  if (!valids.includes(parseInt(id))) {return}
+  changeColor(id, player_color)
+ 
 
   // Flippy flippy
-  var x = flips(elem.id)
+  var x = flips(id, player_color)
   console.log("X", x)
   for (let i = 0; i < x.length; ++i) {
-    changeColor(x[i][0] + x[i][1] * 8, player_color)
-    console.log(x[i][0], x[i][1])
+    changeColor(x[i], player_color)
+    console.log(x[i])
   }
+  removeValids()
+  showValids()
+  updateScore()
+
+  // Computer make move here
 }
 
-function onBoard(x, y) {
-  // Check if cordinate is on the board
-  return 0 < x && x <= 7 && 0 < y && y <= 7
+function getColor(id) {
+  var x = getCord(id)
+  return board[x[0]][x[1]]
 }
 
-function flips(id) {
-  var elem = document.getElementById(id)
-  var x = getCord(id)[0],
-    y = getCord(id)[1]
-  console.log(x, y)
-  var color = board[x][y]
+function flips(id, color) {
+  var x = getCord(id)[0], y = getCord(id)[1]
   var opp = swap_color[color]
   var flips = []
   for (let dx = -1; dx < 2; ++dx) {
@@ -69,16 +75,14 @@ function flips(id) {
       for (let i = 1; i < 9; ++i) {
         var nx = x + i * dx
         var ny = y + i * dy
-        // console.log(dx, dy, board[nx][ny])
-        if (x < 0 || x >= 8 || y < 0 || y >= 8) {
+        if (nx < 0 || nx >= 8 || ny < 0 || ny >= 8) {
           break
         }
-        if (board[nx][ny] == -1) {
+        if (board[nx][ny] == -1 || board[nx][ny] == 2) {
           break
         } else if (board[nx][ny] == opp) {
-          opps.push([nx, ny])
+          opps.push(getId(nx, ny))
         } else if (board[nx][ny] == color) {
-          // console.log(opps)
           flips.push.apply(flips, opps)
           break
         }
@@ -89,37 +93,73 @@ function flips(id) {
 }
 
 function changeColor(id, c) {
-  // black = 0, white = 1
+  // black = 0, white = 1, gray = 2
   var elem = document.getElementById(id)
   var x = getCord(id)[0],
     y = getCord(id)[1]
   if (c === 0) {
     elem.className = "circle black"
     board[x][y] = 0
-    score_b += 1
   } else if (c === 1) {
     elem.className = "circle white"
     board[x][y] = 1
-    score_w += 1
+  } else if (c === 2) {
+    elem.className = "circle gray"
+    board[x][y] = 2
+  } else if (c === -1) {
+    elem.className = "circle green"
+    board[x][y] = -1
   }
-  console.log(board)
-  console.log(`Score black: ${score_b}`, `Score white: ${score_w}`)
-}
-
-function flipColor(id) {
-  let color = board[id]
-  color = swap_color[color]
-
-  if (color == 0) {
-    color_w -= 1
-  } else if (color == 1) {
-    color_b -= 1
-  }
-
-  changeColor(id, color)
 }
 
 function getCord(id) {
   id = parseInt(id)
   return [id % 8, Math.floor(id / 8)]
+}
+
+function getId(x, y) {
+  return x + y * 8
+}
+
+function getValidMoves(color) {
+  var valids = []
+  for (var i = 0; i < 64; i++) {
+    if (getColor(i) == -1 || getColor(i) == 2) {
+      var temp = flips(i, color)
+      if (temp.length > 0) {
+        valids.push(i)
+      }
+    }
+  }
+
+  return valids
+}
+
+function showValids() {
+  var valids = getValidMoves(player_color)
+  for (var i = 0; i < valids.length; i++) {
+    changeColor(valids[i], 2)
+  }
+}
+
+function removeValids() {
+  for (let i = 0; i < 64; ++i) {
+    console.log(getColor(i))
+    if (getColor(i) == 2) {changeColor(i, -1)}
+  }
+}
+
+function updateScore() {
+  var score_w = 0
+  var score_b = 0
+  var elem = document.getElementById("score")
+  for (var i = 0; i < 64; i++) {
+    var color = getColor(i)
+    if (color == 0) {
+      score_b += 1
+    } else if (color == 1) {
+      score_w += 1
+    }
+  }
+  elem.innerHTML = `Score white: ${score_w} Score black: ${score_b}`
 }
