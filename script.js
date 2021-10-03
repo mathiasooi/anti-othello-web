@@ -45,7 +45,7 @@ function selectTile(elem) {
     var x = flips(elem.id)
     console.log("X", x)
     for (let i = 0; i < x.length; ++i) {
-        changeColor(x[i][0]*8 + x[i][1], player_color)
+        changeColor(x[i][0] + x[i][1]*8, player_color)
         console.log(x[i][0], x[i][1])
     }
 }
