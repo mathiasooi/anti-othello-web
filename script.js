@@ -11,7 +11,7 @@ function init() {
     var x = document.createElement("div")
     var y = document.createElement("div")
     y.className = "circle green"
-    x.className = "green"
+    x.className = "green transition"
     x.appendChild(y)
     y.id = i
     y.addEventListener("click", selectTile)
@@ -58,6 +58,19 @@ function selectTile(elem) {
   updateScore()
 
   // Computer make move here
+  var valids = getValidMoves(swap_color[player_color])
+  var x = valids[Math.floor(Math.random() * valids.length)]
+  changeColor(x, swap_color[player_color])
+  var y = flips(x, swap_color[player_color])
+  for (let i = 0; i < y.length; ++i) {
+    // setTimeout(function() {
+    //   changeColor(y[i], swap_color[player_color])
+    // }, 500) // Delay 0.5s
+    changeColor(y[i], swap_color[player_color])
+  }
+  removeValids()
+  showValids()
+  updateScore()
 }
 
 function getColor(id) {
@@ -144,7 +157,6 @@ function showValids() {
 
 function removeValids() {
   for (let i = 0; i < 64; ++i) {
-    console.log(getColor(i))
     if (getColor(i) == 2) {changeColor(i, -1)}
   }
 }
